@@ -37,21 +37,27 @@ class NewVisitorTest(unittest.TestCase):
 
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertTrue( any(row.text == '1: Buy frozen pizza' for row in rows), "New to-do item did not appear in table" )
-
+        self.assertIn('1: Buy frozen pizza', [row.text for row in rows])
 
     # the updated page also contains a text box for further items to be added
-        self.fail('Finish the test')
-
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        self.assertEqual( inputbox.get_attribute('placeholder'), 'Enter a to-do item' )
 
     # Uma adds "eat frozen pizza" into the text box
     # she doesn't want to forget
+        inputbox.send_keys('Eat frozen pizza')
+        inputbox.send_keys(Keys.ENTER)
 
     # when the page updates again, it contains both items
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn('1: Buy frozen pizza', [row.text for row in rows])
+        self.assertIn('2: Eat Frozen Pizza', [row.text for row in rows])
 
     # Uma wonders if the site will remember her list
     # it does: and generates a unique URL for it
     # also displays some explanatory text about that
+        self.fail('Finish the test!')
 
     # she double checks the URL works, and that her list is displayed
 

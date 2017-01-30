@@ -1,10 +1,11 @@
+from django.test import LiveServerTestCase
+
 from selenium import webdriver
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from selenium.webdriver.common.keys import Keys
 
-import unittest
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(LiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox(firefox_binary = FirefoxBinary(firefox_path = '/home/woon/Documents/learn/TDD/testing-goat/firefox/firefox'))
@@ -22,7 +23,7 @@ class NewVisitorTest(unittest.TestCase):
     def test_can_start_a_list_and_retrieve_it_later(self):
     # Uma has heard about this cool new website, an automated to-do list
     # she fires up a browser to check out it's home page
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
 
     # she notices it indicates clearly it's a to-do app
         self.assertIn('To-Do', self.browser.title)
@@ -55,7 +56,7 @@ class NewVisitorTest(unittest.TestCase):
     # when the page updates again, it contains both items
 
         self.check_for_row_in_list_table('1: Buy frozen pizza')
-        self.check_for_row_in_list_table('2: Buy frozen pizza')
+        self.check_for_row_in_list_table('2: Eat frozen pizza')
 
     # Uma wonders if the site will remember her list
     # it does: and generates a unique URL for it
@@ -66,5 +67,3 @@ class NewVisitorTest(unittest.TestCase):
 
     # satisfied, she goes to sleep, dreaming of pizza
 
-if __name__ == '__main__':
-    unittest.main(warnings='ignore')

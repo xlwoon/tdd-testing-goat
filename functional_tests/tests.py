@@ -19,7 +19,6 @@ class NewVisitorTest(LiveServerTestCase):
         rows = table.find_elements_by_tag_name('tr')
         self.assertIn(row_text, [row.text for row in rows])
 
-
     def test_can_start_a_list_and_retrieve_it_later(self):
     # Uma has heard about this cool new website, an automated to-do list
     # she fires up a browser to check out it's home page
@@ -106,3 +105,21 @@ class NewVisitorTest(LiveServerTestCase):
 
     # satisfied, she goes to sleep, dreaming of pizza
 
+
+
+
+    def test_layout_and_styling(self):
+
+    # new user goes to homepage
+        self.browser.get(self.live_server_url)
+        window_size = self.browser.get_window_size()
+        window_width = window_size["width"]
+
+    # and notices the input box is nicely centered!
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        self.assertAlmostEqual(inputbox.location['x'] + inputbox.size['width'] / 2, window_width/2, delta = 5)
+
+    # new user starts a new list and sees input is nicely centered there too
+        inputbox.send_keys('testing\n')
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        self.assertAlmostEqual(inputbox.location['x'] + inputbox.size['width'] / 2, window_width/2, delta = 5)
